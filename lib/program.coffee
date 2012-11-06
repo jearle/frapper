@@ -55,8 +55,30 @@ class Program
       args.push process.argv[i]
     return args
 
+  shouldDisplayHelp: (commandName)->
+    shouldDisplayHelp = no
+    if commandName is '-h' or commandName is '--help'
+      shouldDisplayHelp = yes
+    return shouldDisplayHelp
+
+  shouldDisplayVersion: (commandName)->
+    shouldDisplayVersion = no
+    if commandName is '-v' or commandName is '--version'
+      shouldDisplayVersion = yes
+    return shouldDisplayVersion
+
+  displayVersion: ()->
+    Program.cliwriter.displayVersion @version()
+
   exec: ()->
     commandName = @processCommandName()
+
+    if @shouldDisplayVersion commandName
+      @displayVersion()
+      process.exit 1
+
+    # if @shouldDisplayHelp(commandName)
+    #   @displayHelp()
 
     if commandName is undefined
       Program.cliwriter.noCommandSupplied()

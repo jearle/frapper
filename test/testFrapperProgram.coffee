@@ -33,4 +33,12 @@ describe 'frap.Program', ()->
       command = testProgram.commands().model
       assert.equal 'model', command.name()
 
-  testProgram.exec()
+  describe '#shouldDisplayHelp()', ()->
+    it 'should return true', ()->
+      assert.equal true, testProgram.shouldDisplayHelp '-h' 
+      assert.equal true, testProgram.shouldDisplayHelp '--help'
+
+  describe '#shouldDisplayVersion()', ()->
+    it 'should return true', ()->
+      assert.equal true, testProgram.shouldDisplayVersion '-v' 
+      assert.equal true, testProgram.shouldDisplayVersion '--version'

@@ -9,4 +9,9 @@ class CLIWriter
     console.log '\t You did not supply a command. '
     console.log()
 
+  displayVersion: (version)->
+    console.log()
+    console.log '\t %s', version
+    console.log()
+
 module.exports = CLIWriter

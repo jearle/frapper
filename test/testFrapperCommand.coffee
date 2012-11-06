@@ -34,3 +34,6 @@ describe 'frap.Command', ()->
 
     it 'should return model', ()->
       assert.equal 'model', testCommandMultipleArg.name()
+
+  describe '#addVersionOption()', ()->
+    it 'should have a version option automatically added', ()->
