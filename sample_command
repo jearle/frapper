@@ -4,7 +4,16 @@ frap = require '../frapper'
 pkg = require './package.json'
 version = pkg.version
 
-program = new frap.Program 
+# program = new frap.Program 
+#   version: version
+#   commands:
+#     'model [attributes]': 
+#       description: 'Generates a mongoose model.'
+#       options: 
+#         '-v, --verbose': 'Prints out a detailed '
+#       action: (attributes)->
+
+program = new frap.Program
   version: version
   commands:
     'model [attributes]': (attributes)->
@@ -12,3 +21,5 @@ program = new frap.Program
       
 
 program.exec()
+
+#$ sample_command model name:string title:string -d /var/www

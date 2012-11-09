@@ -1,15 +1,17 @@
-class Option
+Jobject = require 'jobject'
+
+class Option extends Jobject
   @regex:
     longHand: /--[A-z0-9]+/g
     shortHand: /^-[A-z0-9]+/g
 
-  _shortHand: ''
-  _longHand: ''
-  _description: ''
-  _name: ''
-  _variable: null
-
   constructor: (commandString, description)->
+    @property 'shortHand'
+    @property 'longHand'
+    @property 'description'
+    @property 'variable'
+    @property 'name'
+
     shortHand = @findShortHand commandString
     longHand = @findLongHand commandString
 
@@ -25,35 +27,8 @@ class Option
   findLongHand: (commandString)->
     return commandString.match(Option.regex.longHand)[0]
 
-  shortHand: ()->
-    return @_shortHand
-
-  setShortHand: (shortHand)->
-    @_shortHand = shortHand
-
-  longHand: ()->
-    return @_longHand
-
-  setLongHand: (longHand)->
-    @_longHand = longHand
-
-  description: ()->
-    return @_description
-
-  setDescription: (description)->
-    @_description = description
-
   createNameFromLongHand: ()->
     longHand = @longHand()
-    @_name = longHand.substring 2, longHand.length
-
-  name: ()->
-    return @_name
-
-  setVariable: (variable)->
-    @_variable = variable
-
-  variable: ()->
-    return @_variable
+    @setName longHand.substring 2, longHand.length
 
 module.exports = Option

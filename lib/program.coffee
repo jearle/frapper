@@ -1,44 +1,39 @@
+Jobject = require 'jobject'
+
 Option = require './option'
 Command = require './command'
 CLIWriter = require './cliwriter'
 
-class Program
+
+class Program extends Jobject
   
   @cliwriter: new CLIWriter()
 
-  _version: null
-  _options: {}
-  _commands: {}
-
   constructor: (options)->
+    @property 'version'
+    @property 'options'
+    @property 'commands'
+
     @setVersion options.version
     @setOptions options.options
     @setCommands options.commands
 
-  version: ()->
-    return @_version
-
-  setVersion: (version)->
-    @_version = version
-
-  options: ()->
-    return @_options
-
   setOptions: (options)->
+    @_options = {} if @_options is null
+
     @addOption command, description for command, description of options
+
+  setCommands: (commands)->
+    @_commands = {} if @_commands is null
+    
+    @addCommand command, func for command, func of commands
 
   addOption: (command, description)->
     option = new Option command, description 
     @_options[option.shortHand()] = option
     @_options[option.name()] = option
 
-  commands: ()->
-    return @_commands
-
-  setCommands: (commands)->
-    @addCommands command, func for command, func of commands
-    
-  addCommands: (commandString, func)->
+  addCommand: (commandString, func)->
     command = new Command commandString, func
     @_commands[command.name()] = command
 
