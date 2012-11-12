@@ -1,44 +1,45 @@
-# assert = require 'assert'
-# frap = require '../../frapper'
+should = require 'should'
+Program = require('../../frapper').Program
+Command = require('../../frapper').Command
 
-# describe 'frap.Program', ()->
-#   testVersion = '1.0.0'
-#   testOptions = 
-#     '-o, --option1 <variable>': 'test description'
-#   testCommands = 
-#     'model <arg>': ()->
-#       console.log 'hey'
+sys = require 'sys'
+exec = require('child_process').exec
+path = require 'path'
 
-#   testProgram = new frap.Program
-#     version: testVersion
-#     options: testOptions
-#     commands: testCommands
+describe 'Program', ->
+  testProps =
+    'test <name> [args]':
+      description: 'A test with multiple attributes.'
+      options:
+        '-b --boolean': 'A boolean test option.'
+        '-v --variable <arg>': 'A single variable test option.'
+        '-a --array [args]': 'An array variable test option.'
+      action: (name, args)->
+        console.log name
+        console.log args
+    'model <name> [attrs]':
+      description: 'A test command to generate models'
+      action: (name, attrs)->
+        console.log name
+        console.log attrs
 
-#   describe '#version()', ()->
-#     it 'should return ' + testVersion, ()->
-#       assert.equal testVersion, testProgram.version()
+  program = new Program testProps
 
-#   describe '#options().[optionName]', ()->
-#     it 'should return an option object with name option1', ()->
-#       option = testProgram.options().option1
-#       assert.equal 'option1', option.name()
+  it 'should have a commandProperties getter that returns a value equal to testProps', ->
+    program.commandProperties().should.eql testProps
 
-#     it 'should have a pointer to option object named option1 when using shortHand as key', ()->
-#       option = testProgram.options().option1
-#       optionFromShortHandPointer = testProgram.options()['-o']
-#       assert.equal option, optionFromShortHandPointer
+  it 'should have a commands getter that return an object with properties test and model that point to Command objects', ->
+    program.commands().test.should.be.an.instanceof Command
+    program.commands().model.should.be.an.instanceof Command
 
-#   describe '#commands().[commandName]', ()->
-#     it 'should return a command object with the name model', ()->
-#       command = testProgram.commands().model
-#       assert.equal 'model', command.name()
+  mockProgramLocation = path.join __dirname, '/mocks/mockProgram.coffee'
+  console.log mockProgramLocation
+  it 'should produce stdout which contains MyModel, [ \'title:string\', \'body:string\' ], and { boolean: true }', (done)->
+    exec mockProgramLocation + ' model MyModel title:string body:string -b', (error, stdout, stderr)->
+      
+      stdout.should.match /MyModel/g
+      stdout.should.match /\[ 'title:string', 'body:string' \]/g
+      stdout.should.match /\{ boolean: true \}/
 
-#   describe '#shouldDisplayHelp()', ()->
-#     it 'should return true', ()->
-#       assert.equal true, testProgram.shouldDisplayHelp '-h' 
-#       assert.equal true, testProgram.shouldDisplayHelp '--help'
-
-#   describe '#shouldDisplayVersion()', ()->
-#     it 'should return true', ()->
-#       assert.equal true, testProgram.shouldDisplayVersion '-v' 
-#       assert.equal true, testProgram.shouldDisplayVersion '--version'
+      throw error if error
+      done()
