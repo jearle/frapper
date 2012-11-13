@@ -19,54 +19,61 @@
       args: /(<[A-z0-9]+>|\[[A-z0-9]+\])/g
     };
 
+    Command.property('name');
+
+    Command.property('options');
+
+    Command.property('action');
+
+    Command.property('description');
+
+    Command.property('properties');
+
+    Command.property('rawCommand');
+
     function Command(rawCommand, properties) {
-      this.property('name');
-      this.property('options');
-      this.property('action');
-      this.property('description');
-      this.property('properties');
-      this.property('rawCommand');
-      this.setProperties(properties);
-      this.setRawCommand(rawCommand);
-      this.setDescription(this.properties()['description']);
-      this.setAction(this.properties()['action']);
+      this.properties = properties;
+      this.rawCommand = rawCommand;
+      this.description = this.properties['description'];
+      this.action = this.properties['action'];
       this.setNameWithRawCommand();
       this.setOptionsWithProperties();
     }
 
     Command.prototype.setNameWithRawCommand = function() {
-      return this.setName(this.extractNameFromRawCommand());
+      return this.name = this.extractNameFromRawCommand();
     };
 
     Command.prototype.setOptionsWithProperties = function() {
-      return this.setOptions(this.createOptionsFromProperties());
+      return this.options = this.createOptionsFromProperties();
     };
 
     Command.prototype.getOptionWithSwitch = function(optionSwitch) {
       var option, _i, _len, _ref;
-      _ref = this.options();
+      _ref = this.options;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
-        if (option.shortHand() === optionSwitch) {
+        if (option.shortHand === optionSwitch) {
           return option;
         }
-        if (option.longHand() === optionSwitch) {
+        if (option.longHand === optionSwitch) {
           return option;
         }
       }
     };
 
     Command.prototype.extractNameFromRawCommand = function() {
-      return this.rawCommand().match(Command.regex.command)[0];
+      return this.rawCommand.match(Command.regex.command)[0];
     };
 
     Command.prototype.createOptionsFromProperties = function() {
-      var createdOptions, description, optionCommand, _ref;
+      var createdOptions, description, option, optionCommand, _ref;
       createdOptions = [];
-      _ref = this.properties()['options'];
+      _ref = this.properties['options'];
       for (optionCommand in _ref) {
         description = _ref[optionCommand];
-        createdOptions.push(new Option(optionCommand, description));
+        option = new Option(optionCommand, description);
+        createdOptions.push(option);
       }
       return createdOptions;
     };
@@ -81,8 +88,8 @@
 
     Command.prototype.run = function(args) {
       var action, applyArgs, commandArgs, multipleArgs, options;
-      action = this.action();
-      commandArgs = this.rawCommand().match(Command.regex.args);
+      action = this.action;
+      commandArgs = this.rawCommand.match(Command.regex.args);
       applyArgs = this.extractSingleArgs(commandArgs, args);
       multipleArgs = this.extractMultipleArgs(commandArgs, args);
       options = this.extractOptionValues(args);
@@ -93,22 +100,22 @@
     Command.prototype.extractOptionValues = function(args) {
       var arg, i, initialI, option, optionArgArray, optionObj, _i, _j, _len, _ref, _ref1;
       optionObj = {};
-      _ref = this.options();
+      _ref = this.options;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
-        if (option.argType() === Option.type.bool) {
-          optionObj[option.name()] = false;
+        if (option.argType === Option.type.bool) {
+          optionObj[option.name] = false;
         }
       }
       for (i = _j = 0, _ref1 = args.length - 1; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; i = 0 <= _ref1 ? ++_j : --_j) {
         arg = args[i];
         if (Option.isOptionSwitch(arg)) {
           option = this.getOptionWithSwitch(arg);
-          if (option.argType() === Option.type.bool) {
-            optionObj[option.name()] = true;
-          } else if (option.argType() === Option.type.single) {
-            optionObj[option.name()] = args[i + 1];
-          } else if (option.argType() === Option.type.multiple) {
+          if (option.argType === Option.type.bool) {
+            optionObj[option.name] = true;
+          } else if (option.argType === Option.type.single) {
+            optionObj[option.name] = args[i + 1];
+          } else if (option.argType === Option.type.multiple) {
             initialI = i;
             i++;
             optionArgArray = [];
@@ -116,7 +123,7 @@
               optionArgArray.push(args[i]);
               i++;
             }
-            optionObj[option.name()] = optionArgArray;
+            optionObj[option.name] = optionArgArray;
           }
         }
       }

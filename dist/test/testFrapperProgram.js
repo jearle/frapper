@@ -39,11 +39,11 @@
     };
     program = new Program(testProps);
     it('should have a commandProperties getter that returns a value equal to testProps', function() {
-      return program.commandProperties().should.eql(testProps);
+      return program.commandProperties.should.eql(testProps);
     });
     return it('should have a commands getter that return an object with properties test and model that point to Command objects', function() {
-      program.commands().test.should.be.an["instanceof"](Command);
-      return program.commands().model.should.be.an["instanceof"](Command);
+      program.commands.test.should.be.an["instanceof"](Command);
+      return program.commands.model.should.be.an["instanceof"](Command);
     });
   });
 

@@ -30,21 +30,21 @@
       return command.should.be.an["instanceof"](Command);
     });
     it('should have a getter name that returns value "test"', function() {
-      return command.name().should.equal('test');
+      return command.name.should.equal('test');
     });
     it('should have a getter rawCommand that returns value "test <name> [args]"', function() {
-      return command.rawCommand().should.equal('test <name> [args]');
+      return command.rawCommand.should.equal('test <name> [args]');
     });
     it('should have a getter description that returns value "A test with multiple attributes."', function() {
-      return command.description().should.equal('A test with multiple attributes.');
+      return command.description.should.equal('A test with multiple attributes.');
     });
     it('should have options with name boolean, variable, and array', function() {
-      command.options()[0].name().should.equal('boolean');
-      command.options()[1].name().should.equal('variable');
-      return command.options()[2].name().should.equal('array');
+      command.options[0].name.should.equal('boolean');
+      command.options[1].name.should.equal('variable');
+      return command.options[2].name.should.equal('array');
     });
     it('should have a getter action that returns a function', function() {
-      return command.action().should.be.a('function');
+      return command.action.should.be.a('function');
     });
     describe('#run()', function() {
       command.run(testRunArguments);

@@ -14,10 +14,12 @@
 
     __extends(Program, _super);
 
+    Program.property('commandProperties');
+
+    Program.property('commands');
+
     function Program(commandProperties) {
-      this.property('commandProperties');
-      this.property('commands');
-      this.setCommandProperties(commandProperties);
+      this.commandProperties = commandProperties;
       this.setCommandsFromCommandProperties();
     }
 
@@ -25,20 +27,20 @@
       var command, commandArgs, commandName;
       commandName = this.getCommandNameFromArgv();
       commandArgs = this.getCommandArgs();
-      command = this.commands()[commandName];
+      command = this.commands[commandName];
       return command.run(commandArgs);
     };
 
     Program.prototype.setCommandsFromCommandProperties = function() {
       var command, commands, properties, rawCommand, _ref;
       commands = {};
-      _ref = this.commandProperties();
+      _ref = this.commandProperties;
       for (rawCommand in _ref) {
         properties = _ref[rawCommand];
         command = new Command(rawCommand, properties);
-        commands[command.name()] = command;
+        commands[command.name] = command;
       }
-      return this.setCommands(commands);
+      return this.commands = commands;
     };
 
     Program.prototype.getCommandNameFromArgv = function() {

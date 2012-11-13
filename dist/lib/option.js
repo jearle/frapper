@@ -27,18 +27,23 @@
       return !!(string.match(Option.regex.shortHand)) || !!(string.match(Option.regex.longHand));
     };
 
+    Option.property('shortHand');
+
+    Option.property('longHand');
+
+    Option.property('description');
+
+    Option.property('argType');
+
+    Option.property('name');
+
     function Option(commandString, description) {
       var longHand, shortHand;
-      this.property('shortHand');
-      this.property('longHand');
-      this.property('description');
-      this.property('argType');
-      this.property('name');
       shortHand = this.findShortHand(commandString);
       longHand = this.findLongHand(commandString);
-      this.setShortHand(shortHand);
-      this.setLongHand(longHand);
-      this.setDescription(description);
+      this.shortHand = shortHand;
+      this.longHand = longHand;
+      this.description = description;
       this.setArgTypeWithCommandString(commandString);
       this.createNameFromLongHand();
     }
@@ -53,18 +58,16 @@
 
     Option.prototype.setArgTypeWithCommandString = function(commandString) {
       if (commandString.match(Option.regex.singleArg)) {
-        return this.setArgType(Option.type.single);
+        return this.argType = Option.type.single;
       } else if (commandString.match(Option.regex.multipleArgs)) {
-        return this.setArgType(Option.type.multiple);
+        return this.argType = Option.type.multiple;
       } else {
-        return this.setArgType(Option.type.bool);
+        return this.argType = Option.type.bool;
       }
     };
 
     Option.prototype.createNameFromLongHand = function() {
-      var longHand;
-      longHand = this.longHand();
-      return this.setName(longHand.substring(2, longHand.length));
+      return this.name = this.longHand.substring(2, this.longHand.length);
     };
 
     return Option;

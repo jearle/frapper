@@ -13,38 +13,38 @@
     testCommand = '-o, --option1 <variable>';
     testDescription = 'test description';
     testOption = new frap.Option(testCommand, testDescription);
-    describe('#longHand()', function() {
+    describe('#longHand', function() {
       return it('should return --option1', function() {
-        return assert.equal('--option1', testOption.longHand());
+        return testOption.longHand.should.be.eql('--option1');
       });
     });
-    describe('#shortHand()', function() {
+    describe('#shortHand', function() {
       return it('should return -o', function() {
-        return assert.equal('-o', testOption.shortHand());
+        return testOption.shortHand.should.be.eql('-o');
       });
     });
     describe('#description()', function() {
       return it('should return ' + testDescription, function() {
-        return assert.equal(testDescription, testOption.description());
+        return testOption.description.should.be.eql(testDescription);
       });
     });
-    describe('#name()', function() {
+    describe('#name', function() {
       return it('should return option1', function() {
-        return assert.equal('option1', testOption.name());
+        return testOption.name.should.be.eql('option1');
       });
     });
     return describe('#argType()', function() {
       var testOptionBool, testOptionMultiple;
       it('should return type Option.type.single', function() {
-        return testOption.argType().should.equal(frap.Option.type.single);
+        return testOption.argType.should.equal(frap.Option.type.single);
       });
       testOptionMultiple = new frap.Option('-o, --option1 [variables]', testDescription);
       it('should return type Option.type.multiple', function() {
-        return testOptionMultiple.argType().should.equal(frap.Option.type.multiple);
+        return testOptionMultiple.argType.should.equal(frap.Option.type.multiple);
       });
       testOptionBool = new frap.Option('-o, --option1', testDescription);
       return it('should return type Option.type.bool', function() {
-        return testOptionBool.argType().should.equal(frap.Option.type.bool);
+        return testOptionBool.argType.should.equal(frap.Option.type.bool);
       });
     });
   });
