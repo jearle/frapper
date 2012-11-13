@@ -1,7 +1,7 @@
 {
   "name": "frapper",
   "description": "DSL for command-line applications.  Inspired in part by commander.",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "author": {
     "name": "Jesse Earle",
     "email": "earle.jesse@gmail.com"
