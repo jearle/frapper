@@ -15,19 +15,20 @@ class Option extends Jobject
   @isOptionSwitch: (string)->
     !!(string.match Option.regex.shortHand) or !!(string.match Option.regex.longHand)
 
-  constructor: (commandString, description)->
-    @property 'shortHand'
-    @property 'longHand'
-    @property 'description'
-    @property 'argType'
-    @property 'name'
+  @property 'shortHand'
+  @property 'longHand'
+  @property 'description'
+  @property 'argType'
+  @property 'name'
 
+  constructor: (commandString, description)->
+    
     shortHand = @findShortHand commandString
     longHand = @findLongHand commandString
 
-    @setShortHand shortHand
-    @setLongHand longHand
-    @setDescription description
+    @shortHand = shortHand
+    @longHand = longHand
+    @description = description
 
     @setArgTypeWithCommandString commandString
 
@@ -41,14 +42,13 @@ class Option extends Jobject
 
   setArgTypeWithCommandString: (commandString)->
     if commandString.match Option.regex.singleArg
-      @setArgType Option.type.single 
+      @argType = Option.type.single 
     else if commandString.match Option.regex.multipleArgs
-      @setArgType Option.type.multiple
+      @argType = Option.type.multiple
     else
-      @setArgType Option.type.bool 
+      @argType = Option.type.bool 
 
   createNameFromLongHand: ()->
-    longHand = @longHand()
-    @setName longHand.substring 2, longHand.length
+    @name = @longHand.substring 2, @longHand.length
 
 module.exports = Option

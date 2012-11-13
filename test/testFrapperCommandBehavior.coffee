@@ -1,5 +1,5 @@
 should = require 'should'
-Command = require('../../frapper').Command
+Command = require('../').Command
 
 describe 'Command', ->
   
@@ -11,6 +11,7 @@ describe 'Command', ->
   testCommandArguments = ['<test>', '[tests]']
 
   # given
+  
   command = new Command 'test <name> [args]',
     description: 'A test with multiple attributes.'
     options:
@@ -26,21 +27,21 @@ describe 'Command', ->
     command.should.be.an.instanceof(Command)
 
   it 'should have a getter name that returns value "test"', ->
-    command.name().should.equal 'test'
+    command.name.should.equal 'test'
 
   it 'should have a getter rawCommand that returns value "test <name> [args]"', ->
-    command.rawCommand().should.equal 'test <name> [args]'
+    command.rawCommand.should.equal 'test <name> [args]'
 
   it 'should have a getter description that returns value "A test with multiple attributes."', ->
-    command.description().should.equal 'A test with multiple attributes.'
+    command.description.should.equal 'A test with multiple attributes.'
 
   it 'should have options with name boolean, variable, and array', ->
-    command.options()[0].name().should.equal 'boolean'
-    command.options()[1].name().should.equal 'variable'
-    command.options()[2].name().should.equal 'array'
+    command.options[0].name.should.equal 'boolean'
+    command.options[1].name.should.equal 'variable'
+    command.options[2].name.should.equal 'array'
 
   it 'should have a getter action that returns a function', ->
-    command.action().should.be.a 'function'
+    command.action.should.be.a 'function'
 
   describe '#run()', ->
     command.run testRunArguments

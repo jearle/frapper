@@ -9,49 +9,45 @@ class Command extends Jobject
     multipleArgs: /\[[A-z0-9]+\]/g
     args: /(<[A-z0-9]+>|\[[A-z0-9]+\])/g
 
-  constructor: (rawCommand, properties)->
-    @property 'name'
-    @property 'options'
-    @property 'action'
-    @property 'description'
-    @property 'properties'
-    @property 'rawCommand'
+  @property 'name'
+  @property 'options'
+  @property 'action'
+  @property 'description'
+  @property 'properties'
+  @property 'rawCommand'
 
-    @setProperties properties
-    @setRawCommand rawCommand
-    @setDescription @properties()['description']
-    @setAction @properties()['action']
+  constructor: (rawCommand, properties)->
+
+    @properties = properties
+    @rawCommand = rawCommand
+
+    @description = @properties['description']
+    @action = @properties['action']
+   
     @setNameWithRawCommand()
     @setOptionsWithProperties()
 
-  # setProperties: (properties)->
-  #   for key, val of properties
-  #     @_properties = val
-  #     break
-
-  # setRawCommand: (properties)->
-  #   for key, val of properties
-  #     @_rawCommand = key
-  #     break
-
   setNameWithRawCommand: ()->
-    @setName @extractNameFromRawCommand()
+    @name = @extractNameFromRawCommand()
 
   setOptionsWithProperties: ()->
-    @setOptions @createOptionsFromProperties()
+    @options = @createOptionsFromProperties()
 
   getOptionWithSwitch: (optionSwitch)->
-    for option in @options()
-      return option if option.shortHand() is optionSwitch
-      return option if option.longHand() is optionSwitch
+    for option in @options
+      return option if option.shortHand is optionSwitch
+      return option if option.longHand is optionSwitch
 
   extractNameFromRawCommand: ()->
-    return @rawCommand().match(Command.regex.command)[0]
+    return @rawCommand.match(Command.regex.command)[0]
 
   createOptionsFromProperties: ()->
     createdOptions = []
-    for optionCommand, description of @properties()['options']
-      createdOptions.push new Option optionCommand, description
+
+    for optionCommand, description of @properties['options']
+      option = new Option optionCommand, description
+      createdOptions.push option
+    
     return createdOptions
 
   isMultipleArgs: (commandArg)->
@@ -61,8 +57,8 @@ class Command extends Jobject
     !!commandArg.match Command.regex.singleArg
 
   run: (args)->
-    action = @action()
-    commandArgs = @rawCommand().match(Command.regex.args)
+    action = @action
+    commandArgs = @rawCommand.match(Command.regex.args)
 
     applyArgs = @extractSingleArgs commandArgs, args
     multipleArgs = @extractMultipleArgs commandArgs, args
@@ -75,26 +71,26 @@ class Command extends Jobject
   # TODO: Refactor
   extractOptionValues: (args)->
     optionObj = {}
-    for option in @options()
-      if option.argType() is Option.type.bool
-        optionObj[option.name()] = false
+    for option in @options
+      if option.argType is Option.type.bool
+        optionObj[option.name] = false
 
     for i in [0..args.length - 1]
       arg = args[i]
       if Option.isOptionSwitch arg
         option = @getOptionWithSwitch arg
-        if option.argType() is Option.type.bool
-          optionObj[option.name()] = true
-        else if option.argType() is Option.type.single
-          optionObj[option.name()] = args[i + 1]
-        else if option.argType() is Option.type.multiple
+        if option.argType is Option.type.bool
+          optionObj[option.name] = true
+        else if option.argType is Option.type.single
+          optionObj[option.name] = args[i + 1]
+        else if option.argType is Option.type.multiple
           initialI = i
           i++
           optionArgArray = []
           while not (Option.isOptionSwitch args[i])
             optionArgArray.push args[i]
             i++
-          optionObj[option.name()] = optionArgArray
+          optionObj[option.name] = optionArgArray
 
     return optionObj
 
