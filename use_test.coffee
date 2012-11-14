@@ -1,9 +1,3 @@
-Frapper
-===============
-
-DSL for command-line applications.  Inspired in part by commander.
-
-```coffee
 Program = require('./').Program
 program = new Program
   'test <name> [args]':
@@ -21,10 +15,3 @@ program.run()
 # log: MyName
 # log: [ 'myArg' ]
 # log: true
-```
-
-## Features
-
-  * A simple way to create command line utilities
-  * Similar to Commander, but easier to write and understand
-  * A DSL dedicated to cli applications
