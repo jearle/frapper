@@ -7,7 +7,6 @@ program = new Program
     action: (name, args)->
       console.log name
       console.log args
-      console.log @boolean
 
 program.run()
 
