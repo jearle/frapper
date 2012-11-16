@@ -127,9 +127,9 @@ program.run()
 Example:
 
     $ ./my_program model MyModel title:String body:String -d -m test1 test2 test3 -s singleTest
-    $ MyModel
-    $ [ 'title:String', 'body:String' ]
-    $ true
-    $ singleTest
-    $ [ 'test1', 'test2', 'test3' ]
+    MyModel
+    [ 'title:String', 'body:String' ]
+    true
+    singleTest
+    [ 'test1', 'test2', 'test3' ]
 
