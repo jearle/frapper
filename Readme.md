@@ -50,6 +50,7 @@ program = new Program
     action: (modelName, modelAttributes)->
       console.log name
       console.log args
+program.run()
 ```
 ### Command
 
@@ -81,6 +82,7 @@ program = new Program
       console.log name
       console.log args
       console.log @details
+program.run()
 ```
 
 This will print false:
@@ -120,13 +122,16 @@ program = new Program
       console.log @details
       console.log @singleVariable
       console.log @multiVariable
+program.run()
 ```
 Example:
 
+```bash
   $ ./my_program model MyModel title:String body:String -d -m test1 test2 test3 -s singleTest
   $ MyModel
   $ [ 'title:String', 'body:String' ]
   $ true
   $ singleTest
   $ [ 'test1', 'test2', 'test3' ]
+```
 
