@@ -60,9 +60,9 @@ The [] around modelAttributes denotes an array.  This means that all attributes 
 
 For example:
 
-  $ ./my_program model MyModel title:String body:String
-  $ MyModel
-  $ [ 'title:String', 'body:String' ]
+    $ ./my_program model MyModel title:String body:String
+    MyModel
+    [ 'title:String', 'body:String' ]
 
 ### Options
 
@@ -87,24 +87,24 @@ program.run()
 
 This will print false:
 
-  $ ./my_program model MyModel title:String body:String
-  $ MyModel
-  $ [ 'title:String', 'body:String' ]
-  $ false
+    $ ./my_program model MyModel title:String body:String
+    MyModel
+    [ 'title:String', 'body:String' ]
+    false
 
 This will print true:
 
-  $ ./my_program model MyModel title:String body:String -d
-  $ MyModel
-  $ [ 'title:String', 'body:String' ]
-  $ true
+    $ ./my_program model MyModel title:String body:String -d
+    MyModel
+    [ 'title:String', 'body:String' ]
+    true
 
 This will also print true:
 
-  $ ./my_program model MyModel title:String body:String --details
-  $ MyModel
-  $ [ 'title:String', 'body:String' ]
-  $ true
+    $ ./my_program model MyModel title:String body:String --details
+    MyModel
+    [ 'title:String', 'body:String' ]
+    true
 
 We can also have options with single variables or an array of variables:
 
